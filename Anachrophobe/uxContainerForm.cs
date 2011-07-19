@@ -47,7 +47,6 @@ namespace Anachrophobe
             // The try/catches are an easier way to avoid stupid crashes, and give the user information to give to the developer
             try
             {
-                // This if/else tree is really only used on the YRU-Up branch, and should be removed in the master branch
                 if (uxFlowPanel.Controls.Count == 0)
                 {
                     if (uxYUPmode.Checked == true)
@@ -132,7 +131,6 @@ namespace Anachrophobe
             {
                 try
                 {
-                    // This code can be removed from the master branch, leave in the YRU-Up branch
                     if (uxFlowPanel.Controls.Count == 0)
                     {
                         if (uxYUPmode.Checked == true)

@@ -58,7 +58,7 @@ namespace Anachrophobe
             uxNameLabel.Text = m_Action.Name;
         }
 
-        // This whole initialization method can be removed in the master branch. It is only used in the YRU-Up branch.
+        // This initialization method tells the control if it is the first one in the container form
         public actionClockControl(string initStartTime, string initEndTime, string initName, bool isFirst) : this()
         {
             m_ErrorCount = 0;
@@ -356,7 +356,7 @@ namespace Anachrophobe
                 // We need to figure out who owns us
                 Control control = this.Parent;
                 
-                // This if can be removed in the master branch, it is only used in the YRU-Up branch
+                // This checks if we are the first control, if so, we need to make a new "first" control before self-destructing
                 if (m_isFirst == true)
                 {
                     // We need to modify the date the next show begins, it is exactly one week after this one.
