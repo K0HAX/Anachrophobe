@@ -22,15 +22,15 @@ namespace Anachrophobe
         private void Form1_Load(object sender, EventArgs e)
         {
             StringBuilder licenseText = new StringBuilder();
-            licenseText.Append("Licensed for non-profit use");
+            licenseText.Append("Standard GPL License");
             uxLicenseText.Text = licenseText.ToString();
             Height = Screen.PrimaryScreen.WorkingArea.Height;
             Width = Screen.PrimaryScreen.WorkingArea.Width;
             m_ScreenBounds.X = this.Height - 281;
             m_ScreenBounds.Y = this.Width - 893;
-            //m_ScreenBounds.X = Screen.PrimaryScreen.WorkingArea.Height ;
-            //m_ScreenBounds.Y = Screen.PrimaryScreen.WorkingArea.Width ;
-
+            
+            //the following line is for the MASTER branch only.
+            uxYUPmode.Dispose();
         }
 
         private void uxKillProgram_Click(object sender, EventArgs e)
