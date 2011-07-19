@@ -9,6 +9,8 @@ using System.Windows.Forms;
 
 namespace Anachrophobe
 {
+    // This is used to fill the screen with a SINGLE timer.
+    // 99% of the code is taken from the actionClockControl, use it as reference, and update them both at the same time.
     public partial class uxFullSingleTimer : Form
     {
         private int m_BlinkTrack;
