@@ -30,7 +30,7 @@ namespace Anachrophobe
             m_ScreenBounds.Y = this.Width - 893;
             
             //the following line is for the MASTER branch only.
-            uxYUPmode.Dispose();
+            //uxYUPmode.Dispose();
         }
 
         private void uxKillProgram_Click(object sender, EventArgs e)
