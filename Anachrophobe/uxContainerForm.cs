@@ -34,9 +34,6 @@ namespace Anachrophobe
             // Here we generate the magic number based on the size of the window.
             m_ScreenBounds.X = this.Height - 281;
             m_ScreenBounds.Y = this.Width - 893;
-            
-            //the following line is for the MASTER branch only.
-            //uxYUPmode.Dispose();
         }
 
         private void uxKillProgram_Click(object sender, EventArgs e)
