@@ -10,6 +10,9 @@ using System.Text.RegularExpressions;
 
 namespace Anachrophobe
 {
+    public delegate void ControlDyingHandler(object sender, ActionObject e);
+    
+
     public partial class actionClockControl : UserControl
     {
         // Initialize some variables
@@ -32,34 +35,19 @@ namespace Anachrophobe
             InitializeComponent();
         }
 
-        public actionClockControl(string initStartTime, string initEndTime, string initName) : this()
+        public actionClockControl(ActionObject actionObject) : this()
         {
-            // Initialize the error count to zero
-            m_ErrorCount = 0;
-            // The strings coming in to the control must be very tightly controled, These regular expressions should catch everything.
-            Match matchStart = Regex.Match(initStartTime, @"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9] s?([ap]m)?$", RegexOptions.IgnoreCase);
-            Match matchLength = Regex.Match(initEndTime, @"[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$", RegexOptions.IgnoreCase);
+            m_Action = actionObject;
+            //m_Action.Update(actionObject.StartString, actionObject.EndString);
+            //uxTimeOfAction.Text = Convert.ToDateTime(m_Action.Start).ToString("MM/dd/yyyy hh:mm:ss tt");
+            //uxTimeOfAction.Text = m_Action.Start.ToString();
 
-            // If there's an error, we'll make the user aware of it
-            if((matchStart.Success == false) || (matchLength.Success == false) || (initName == ""))
-            {
-                m_Action = new ActionObject(System.DateTime.Now.ToString(), "00:00:01", "ERROR");
-            }
-            else
-            {
-                // if not, make a new action object, tie it to m_Action, and initialize it with the variables passed to us
-                m_Action = new ActionObject(initStartTime, initEndTime, initName);
-            }
-            // Parse all the stuff used to initialize the timer.
-            
-            uxTimeOfAction.Text = Convert.ToDateTime(m_Action.Start).ToString("MM/dd/yyyy hh:mm:ss tt");
-
-            uxEndOfAction.Text = m_Action.Length.ToString();
-            uxNameLabel.Text = m_Action.Name;
+            //uxEndOfAction.Text = m_Action.Length.ToString();
+            //uxNameLabel.Text = m_Action.Name;
         }
 
         // This initialization method tells the control if it is the first one in the container form
-        public actionClockControl(string initStartTime, string initEndTime, string initName, bool isFirst) : this()
+        public actionClockControl(string initStartTime, string initEndTime, string initName, bool isFirst = false) : this()
         {
             m_ErrorCount = 0;
             Match matchStart = Regex.Match(initStartTime, @"[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9] s?([ap]m)?$", RegexOptions.IgnoreCase);
@@ -81,11 +69,17 @@ namespace Anachrophobe
             uxNameLabel.Text = m_Action.Name;
             if (isFirst == true)
                 m_isFirst = true;
+            EventMessenger.SendMessage(this, m_Action, true, false);
         }
 
         private void actionClockControl_Load(object sender, EventArgs e)
         {
 
+        }
+
+        public ActionObject giveMeObject()
+        {
+            return m_Action;
         }
 
         private void uxUpdateBtn_Click(object sender, EventArgs e)
@@ -355,6 +349,7 @@ namespace Anachrophobe
             {
                 // We need to figure out who owns us
                 Control control = this.Parent;
+                EventMessenger.SendMessage(this, m_Action, false, true);
                 
                 // This checks if we are the first control, if so, we need to make a new "first" control before self-destructing
                 if (m_isFirst == true)

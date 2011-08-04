@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 
 namespace Anachrophobe
 {
@@ -14,14 +17,71 @@ namespace Anachrophobe
     {
         // m_ScreenBounds is a container for a magic number that should be replaced programatically in the future.
         Point m_ScreenBounds;
+        ContainerObject m_Container = new ContainerObject();
+        bool deSerializerActive = true;
 
         public uxContainerForm()
         {
             InitializeComponent();
         }
 
+        private void SaveControls()
+        {
+            //XmlFormatter xf = new XmlFormatter(typeof(ContainerObject));
+            BinaryFormatter bf = new BinaryFormatter();
+            //XmlSerializer xf = new XmlSerializer(typeof(ContainerObject));
+            FileStream fs = new FileStream("state.dat", FileMode.OpenOrCreate);
+            //xf.Serialize(fs, m_Container);
+            //xf.Serialize(fs, m_Container);
+            bf.Serialize(fs, m_Container);
+            fs.Close();
+        }
+
+        private void LoadControls()
+        {
+            FileStream fs = null;
+            try
+            {
+                fs = new FileStream("state.dat", FileMode.Open);
+
+                BinaryFormatter bf = new BinaryFormatter();
+                //XmlFormatter xf = new XmlFormatter(typeof(ContainerObject));
+
+                m_Container = (ContainerObject)bf.Deserialize(fs);
+
+                for (int i = 0; i < m_Container.Objects.Count(); i++)
+                {
+                    actionClockControl acc = new actionClockControl(m_Container.getObject(i));
+                    uxFlowPanel.Controls.Add(acc);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Couldn't find file");
+            }
+            catch
+            {
+                MessageBox.Show("Couldn't parse file");
+            }
+            finally
+            {
+                if(fs != null)
+                    fs.Close();
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            EventMessenger.Changed += EventMessenger_Changed;
+
+            try
+            {
+                LoadControls();
+            }
+            catch
+            {
+                MessageBox.Show("Whoopsie");
+            }
             // StringBuilder is a more efficient way of creating strings than concatination.
             StringBuilder licenseText = new StringBuilder();
             licenseText.Append("Standard GPL License");
@@ -34,6 +94,28 @@ namespace Anachrophobe
             // Here we generate the magic number based on the size of the window.
             m_ScreenBounds.X = this.Height - 281;
             m_ScreenBounds.Y = this.Width - 893;
+
+            
+
+            // last thing to do
+            deSerializerActive = false;
+        }
+
+        void EventMessenger_Changed(object sender, ActionObject e, bool add, bool del)
+        {
+            if (deSerializerActive == false)
+            {
+                if (add == true && del == false)
+                {
+                    m_Container.addObject(e);
+                    SaveControls();
+                    MessageBox.Show("saved");
+                }
+                if (add == false && del == true)
+                {
+                    m_Container.delObject(e);
+                }
+            }
         }
 
         private void uxKillProgram_Click(object sender, EventArgs e)
@@ -160,7 +242,7 @@ namespace Anachrophobe
                 }
                 catch
                 {
-                    MessageBox.Show("Error in uxContainerForm, uxNameOfAction_KeyPressed");
+                    MessageBox.Show("Error in uxContainerForm, uxNameOfAction_KeyDown");
                 }
             }
             else

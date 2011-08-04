@@ -11,7 +11,7 @@ namespace Anachrophobe
     // This is serializable for two reasons
     // In the future I want two features, networking, and storage of timers.
     [Serializable]
-    public class ActionObject : ISerializable
+    public class ActionObject : ISerializable, IDeserializationCallback
     {
         // Initialize all of our local variables.
         
@@ -27,14 +27,14 @@ namespace Anachrophobe
         // This is used for Serialization
         public ActionObject(SerializationInfo info, StreamingContext ctxt)
         {
-            m_Name = (string)info.GetValue("m_Name", typeof(String));
-            m_StartTime = (DateTime)info.GetValue("m_StartTime", typeof(DateTime));
+            m_Name = info.GetString("m_Name");
+            m_StartTime = info.GetDateTime("m_StartTime");
             m_Length = (TimeSpan)info.GetValue("m_Length", typeof(TimeSpan));
         }
 
         #region ISerializable Members
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("m_Name", m_Name);
             info.AddValue("m_StartTime", m_StartTime);
@@ -43,6 +43,13 @@ namespace Anachrophobe
         }
 
         #endregion
+
+        void IDeserializationCallback.OnDeserialization(object sender)
+        {
+            ParseTime = new Parsetime();
+            m_StartBack = Color.Black;
+            m_EndBack = Color.Black;
+        }
 
         public ActionObject()
         {
