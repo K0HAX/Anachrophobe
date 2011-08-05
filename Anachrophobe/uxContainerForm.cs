@@ -9,11 +9,13 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Diagnostics;
 
 namespace Anachrophobe
 {
     public partial class uxContainerForm : Form
     {
+        private System.Windows.Forms.Button uxDebugBtn;
         // m_ScreenBounds is a container for a magic number that should be replaced programatically in the future.
         Point m_ScreenBounds;
         TimerContainerStore m_Container = new TimerContainerStore();
@@ -73,8 +75,24 @@ namespace Anachrophobe
             }
         }
 
+        [Conditional("DEBUG")]
+        private void DebugCode()
+        {
+            
+            this.uxDebugBtn = new System.Windows.Forms.Button();
+            this.panel1.Controls.Add(this.uxDebugBtn);
+            this.uxDebugBtn.Location = new System.Drawing.Point(934, 119);
+            this.uxDebugBtn.Name = "uxDebugBtn";
+            this.uxDebugBtn.Size = new System.Drawing.Size(75, 23);
+            this.uxDebugBtn.TabIndex = 0;
+            this.uxDebugBtn.Text = "Debug";
+            this.uxDebugBtn.Click += new System.EventHandler(this.uxDebugBtn_Click);
+            this.uxLicenseText.Hide();
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            DebugCode();
             EventMessenger.Changed += EventMessenger_Changed;
 
             try
@@ -113,7 +131,7 @@ namespace Anachrophobe
                 {
                     m_Container.addTimer(e);
                     SaveControls();
-                    MessageBox.Show("saved");
+                    //MessageBox.Show("saved");
                 }
                 if (add == false && del == true)
                 {
@@ -254,6 +272,21 @@ namespace Anachrophobe
             {
                 //e.Handled = false;
             }
+        }
+
+        private void uxDebugBtn_Click(object sender, EventArgs e)
+        {
+            DateTime theDate = new DateTime();
+            TimeSpan theEnd = new TimeSpan();
+            Parsetime parser = new Parsetime();
+            theEnd = parser.ParseTS("01:00:00");
+            theDate = DateTime.Now;
+            theDate = theDate.AddMinutes(1+m_Container.Timers.Count());
+            //MessageBox.Show(theDate.ToString());
+            String newDate = Convert.ToDateTime(theDate).ToString("MM/dd/yyyy hh:mm:ss tt");
+            actionClockControl scc = new actionClockControl(newDate, "00:01:00", "Test " + m_Container.Timers.Count());
+            scc.Parent = uxFlowPanel;
+            scc.Show();
         }
     }
 }

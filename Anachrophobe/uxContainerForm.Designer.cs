@@ -1,4 +1,5 @@
-﻿namespace Anachrophobe
+﻿using System.Diagnostics;
+namespace Anachrophobe
 {
     partial class uxContainerForm
     {
@@ -26,11 +27,13 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
+        /// 
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
             this.uxFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            
             this.uxLengthOfAction = new System.Windows.Forms.MaskedTextBox();
             this.uxTimeOfAction = new System.Windows.Forms.MaskedTextBox();
             this.uxLicenseText = new System.Windows.Forms.Label();
@@ -62,6 +65,7 @@
             // 
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            
             this.panel1.Controls.Add(this.uxLengthOfAction);
             this.panel1.Controls.Add(this.uxTimeOfAction);
             this.panel1.Controls.Add(this.uxLicenseText);
@@ -258,6 +262,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.MaskedTextBox uxTimeOfAction;
         private System.Windows.Forms.MaskedTextBox uxLengthOfAction;
+        
     }
 }
 
