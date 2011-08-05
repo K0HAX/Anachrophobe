@@ -4,52 +4,54 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Anachrophobe
 {
     [Serializable]
-    public class ContainerObject : ISerializable
+    public class TimerContainerStore : ISerializable
     {
-        private List<ActionObject> m_objectsList = new List<ActionObject>();
+        private List<TimerDatastore> m_timerList = new List<TimerDatastore>();
 
-        public ContainerObject(SerializationInfo info, StreamingContext ctxt)
+        public TimerContainerStore(SerializationInfo info, StreamingContext ctxt)
         {
-            m_objectsList = (List<ActionObject>)info.GetValue("m_objectsList", typeof(List<ActionObject>));
+            m_timerList = (List<TimerDatastore>)info.GetValue("m_objectsList", typeof(List<TimerDatastore>));
         }
 
         #region ISerializable Members
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("m_objectsList", m_objectsList);
+            info.AddValue("m_objectsList", m_timerList);
         }
 
         #endregion
 
-        public IEnumerable<ActionObject> Objects
+        public IEnumerable<TimerDatastore> Timers
         {
-            get { return m_objectsList; }
+            get { return m_timerList; }
         }
 
-        public ContainerObject() { }
+        public TimerContainerStore() { }
 
         //TODO: Do This
-        public void Serialize()
+        public void Serialize(string filename)
         {
             throw new NotImplementedException();
         }
 
         //TODO: Do this
-        public static ContainerObject Deserialize()
+        public static TimerContainerStore Deserialize(string filename)
         {
             throw new NotImplementedException();
         }
 
-        public ActionObject getObject(int i)
+        public TimerDatastore getTimer(int i)
         {
             try
             {
-                return m_objectsList.ElementAt(i);
+                return m_timerList.ElementAt(i);
             }
             catch
             {
@@ -57,11 +59,11 @@ namespace Anachrophobe
             }
         }
 
-        public void addObject(ActionObject control)
+        public void addTimer(TimerDatastore timer)
         {
             try
             {
-                m_objectsList.Add(control);
+                m_timerList.Add(timer);
             }
             catch
             {
@@ -69,12 +71,11 @@ namespace Anachrophobe
             }
         }
 
-        internal void delObject(ActionObject control)
+        internal void delTimer(TimerDatastore timer)
         {
-            //throw new NotImplementedException();
             try
             {
-                m_objectsList.Remove(control);
+                m_timerList.Remove(timer);
             }
             catch
             {

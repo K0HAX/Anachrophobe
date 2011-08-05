@@ -9,7 +9,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Serialization;
 
 namespace Anachrophobe
 {
@@ -17,7 +16,7 @@ namespace Anachrophobe
     {
         // m_ScreenBounds is a container for a magic number that should be replaced programatically in the future.
         Point m_ScreenBounds;
-        ContainerObject m_Container = new ContainerObject();
+        TimerContainerStore m_Container = new TimerContainerStore();
         bool deSerializerActive = true;
 
         public uxContainerForm()
@@ -27,12 +26,13 @@ namespace Anachrophobe
 
         private void SaveControls()
         {
-            //XmlFormatter xf = new XmlFormatter(typeof(ContainerObject));
             BinaryFormatter bf = new BinaryFormatter();
-            //XmlSerializer xf = new XmlSerializer(typeof(ContainerObject));
-            FileStream fs = new FileStream("state.dat", FileMode.OpenOrCreate);
-            //xf.Serialize(fs, m_Container);
-            //xf.Serialize(fs, m_Container);
+            FileInfo fi = new FileInfo("TimerDatastore.dat");
+            if (fi.Exists == true)
+            {
+                fi.Delete();
+            }
+            FileStream fs = new FileStream("TimerDatastore.dat", FileMode.OpenOrCreate);
             bf.Serialize(fs, m_Container);
             fs.Close();
         }
@@ -40,33 +40,36 @@ namespace Anachrophobe
         private void LoadControls()
         {
             FileStream fs = null;
-            try
+            FileInfo fi = new FileInfo("TimerDatastore.dat");
+            if (fi.Exists == true)
             {
-                fs = new FileStream("state.dat", FileMode.Open);
-
-                BinaryFormatter bf = new BinaryFormatter();
-                //XmlFormatter xf = new XmlFormatter(typeof(ContainerObject));
-
-                m_Container = (ContainerObject)bf.Deserialize(fs);
-
-                for (int i = 0; i < m_Container.Objects.Count(); i++)
+                try
                 {
-                    actionClockControl acc = new actionClockControl(m_Container.getObject(i));
-                    uxFlowPanel.Controls.Add(acc);
+                    fs = new FileStream("TimerDatastore.dat", FileMode.Open);
+
+                    BinaryFormatter bf = new BinaryFormatter();
+
+                    m_Container = (TimerContainerStore)bf.Deserialize(fs);
+
+                    for (int i = 0; i < m_Container.Timers.Count(); i++)
+                    {
+                        actionClockControl acc = new actionClockControl(m_Container.getTimer(i));
+                        uxFlowPanel.Controls.Add(acc);
+                    }
                 }
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("Couldn't find file");
-            }
-            catch
-            {
-                MessageBox.Show("Couldn't parse file");
-            }
-            finally
-            {
-                if(fs != null)
-                    fs.Close();
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("Couldn't find datastore, creating it now.");
+                }
+                catch
+                {
+                    MessageBox.Show("Couldn't parse file");
+                }
+                finally
+                {
+                    if (fs != null)
+                        fs.Close();
+                }
             }
         }
 
@@ -98,22 +101,24 @@ namespace Anachrophobe
             
 
             // last thing to do
+            SaveControls();
             deSerializerActive = false;
         }
 
-        void EventMessenger_Changed(object sender, ActionObject e, bool add, bool del)
+        void EventMessenger_Changed(object sender, TimerDatastore e, bool add, bool del)
         {
             if (deSerializerActive == false)
             {
                 if (add == true && del == false)
                 {
-                    m_Container.addObject(e);
+                    m_Container.addTimer(e);
                     SaveControls();
                     MessageBox.Show("saved");
                 }
                 if (add == false && del == true)
                 {
-                    m_Container.delObject(e);
+                    m_Container.delTimer(e);
+                    SaveControls();
                 }
             }
         }

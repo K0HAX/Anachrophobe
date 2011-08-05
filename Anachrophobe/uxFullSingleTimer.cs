@@ -15,14 +15,14 @@ namespace Anachrophobe
     {
         private int m_BlinkTrack;
         private bool m_BlinkRunning = false;
-        private ActionObject m_Action;
+        private TimerDatastore m_Action;
 
         public uxFullSingleTimer()
         {
             InitializeComponent();
         }
 
-        public uxFullSingleTimer(ActionObject inAction) : this()
+        public uxFullSingleTimer(TimerDatastore inAction) : this()
         {
             // Parse all the stuff used to initialize the timer.
 

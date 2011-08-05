@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace Anachrophobe
 {
-    public delegate void ControlDyingHandler(object sender, ActionObject e);
+    public delegate void ControlDyingHandler(object sender, TimerDatastore e);
     
 
     public partial class actionClockControl : UserControl
@@ -24,7 +24,7 @@ namespace Anachrophobe
         // m_isFirst is only used in the YRU-Up branch, it tells the control to regenerate itself instead of self-destructing
         private bool m_isFirst = false;
         // m_Action is the ActionObject tied to this timer, it stores all the information required to regenerate this timer.
-        ActionObject m_Action;
+        TimerDatastore m_Action;
         // m_ErrorCount is stupid, but it is used to self-destruct the timer if it for some reason throws a fit of errors
         private int m_ErrorCount;
         // m_MaxError determines how many errors m_ErrorCount can hit before the control self-destructs
@@ -35,15 +35,12 @@ namespace Anachrophobe
             InitializeComponent();
         }
 
-        public actionClockControl(ActionObject actionObject) : this()
+        public actionClockControl(TimerDatastore actionObject) : this()
         {
             m_Action = actionObject;
-            //m_Action.Update(actionObject.StartString, actionObject.EndString);
-            //uxTimeOfAction.Text = Convert.ToDateTime(m_Action.Start).ToString("MM/dd/yyyy hh:mm:ss tt");
-            //uxTimeOfAction.Text = m_Action.Start.ToString();
-
-            //uxEndOfAction.Text = m_Action.Length.ToString();
-            //uxNameLabel.Text = m_Action.Name;
+            uxNameLabel.Text = m_Action.Name;
+            uxTimeOfAction.Text = Convert.ToDateTime(m_Action.Start).ToString("MM/dd/yyyy hh:mm:ss tt");
+            uxEndOfAction.Text = m_Action.Length.ToString();
         }
 
         // This initialization method tells the control if it is the first one in the container form
@@ -55,11 +52,11 @@ namespace Anachrophobe
 
             if ((matchStart.Success == false) || (matchLength.Success == false) || (initName == ""))
             {
-                m_Action = new ActionObject(System.DateTime.Now.ToString(), "00:00:01", "ERROR");
+                m_Action = new TimerDatastore(System.DateTime.Now.ToString(), "00:00:01", "ERROR");
             }
             else
             {
-                m_Action = new ActionObject(initStartTime, initEndTime, initName);
+                m_Action = new TimerDatastore(initStartTime, initEndTime, initName);
             }
             // Parse all the stuff used to initialize the timer.
             
@@ -77,7 +74,7 @@ namespace Anachrophobe
 
         }
 
-        public ActionObject giveMeObject()
+        public TimerDatastore giveMeObject()
         {
             return m_Action;
         }

@@ -87,8 +87,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionObject.cs" />
-    <Compile Include="ContainerObject.cs" />
+    <Compile Include="TimerDatastore.cs" />
+    <Compile Include="TimerContainerStore.cs" />
     <Compile Include="EventMessenger.cs" />
     <Compile Include="uxContainerForm.cs">
       <SubType>Form</SubType>
@@ -105,7 +105,6 @@
     <Compile Include="uxFullSingleTimer.Designer.cs">
       <DependentUpon>uxFullSingleTimer.cs</DependentUpon>
     </Compile>
-    <Compile Include="XmlFormatter.cs" />
     <EmbeddedResource Include="uxContainerForm.resx">
       <DependentUpon>uxContainerForm.cs</DependentUpon>
       <SubType>Designer</SubType>

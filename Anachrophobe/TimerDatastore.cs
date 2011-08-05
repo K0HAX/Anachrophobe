@@ -11,7 +11,7 @@ namespace Anachrophobe
     // This is serializable for two reasons
     // In the future I want two features, networking, and storage of timers.
     [Serializable]
-    public class ActionObject : ISerializable, IDeserializationCallback
+    public class TimerDatastore : ISerializable, IDeserializationCallback
     {
         // Initialize all of our local variables.
         
@@ -25,7 +25,7 @@ namespace Anachrophobe
         private Color m_EndBack = Color.Black;
 
         // This is used for Serialization
-        public ActionObject(SerializationInfo info, StreamingContext ctxt)
+        public TimerDatastore(SerializationInfo info, StreamingContext ctxt)
         {
             m_Name = info.GetString("m_Name");
             m_StartTime = info.GetDateTime("m_StartTime");
@@ -51,13 +51,13 @@ namespace Anachrophobe
             m_EndBack = Color.Black;
         }
 
-        public ActionObject()
+        public TimerDatastore()
         {
 
         }
 
         // Initialize with a start time, length (the variable is incorrectly named), and a human-friendly name
-        public ActionObject(string initStartTime, string initEndTime, string initName)
+        public TimerDatastore(string initStartTime, string initEndTime, string initName)
         {
             // Parse our strings
             Start = ParseTime.ParseDT(initStartTime);
