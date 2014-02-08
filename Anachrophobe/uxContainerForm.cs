@@ -42,7 +42,7 @@ namespace Anachrophobe
 
         private void LoadControls()
         {
-            TimerContainerStore m_Container = SaveStore.LoadControls();
+            m_Container = SaveStore.LoadControls();
 
             for (int i = 0; i < m_Container.Timers.Count(); i++)
             {
@@ -74,6 +74,7 @@ namespace Anachrophobe
             try
             {
                 LoadControls();
+                SaveControls();
             }
             catch
             {

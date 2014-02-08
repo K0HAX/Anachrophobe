@@ -1,0 +1,4 @@
+C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\bin\Release\Timers.dll
+C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\bin\Release\Timers.pdb
+C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\obj\Release\Timers.dll
+C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\obj\Release\Timers.pdb
