@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Anachrophobe
+namespace Timers
 {
     [Serializable]
     public class TimerContainerStore : ISerializable
@@ -71,7 +71,7 @@ namespace Anachrophobe
             }
         }
 
-        internal void delTimer(TimerDatastore timer)
+        public void delTimer(TimerDatastore timer)
         {
             try
             {

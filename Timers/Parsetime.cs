@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Anachrophobe
+namespace Timers
 {
-    class Parsetime
+    public class Parsetime
     {
 
         // As a preamble, I think it's pretty stupid that I had to write these functions

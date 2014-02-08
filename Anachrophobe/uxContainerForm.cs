@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Diagnostics;
+using Timers;
 
 namespace Anachrophobe
 {
@@ -41,37 +42,12 @@ namespace Anachrophobe
 
         private void LoadControls()
         {
-            FileStream fs = null;
-            FileInfo fi = new FileInfo("TimerDatastore.dat");
-            if (fi.Exists == true)
+            TimerContainerStore m_Container = SaveStore.LoadControls();
+
+            for (int i = 0; i < m_Container.Timers.Count(); i++)
             {
-                try
-                {
-                    fs = new FileStream("TimerDatastore.dat", FileMode.Open);
-
-                    BinaryFormatter bf = new BinaryFormatter();
-
-                    m_Container = (TimerContainerStore)bf.Deserialize(fs);
-
-                    for (int i = 0; i < m_Container.Timers.Count(); i++)
-                    {
-                        actionClockControl acc = new actionClockControl(m_Container.getTimer(i));
-                        uxFlowPanel.Controls.Add(acc);
-                    }
-                }
-                catch (FileNotFoundException)
-                {
-                    MessageBox.Show("Couldn't find datastore, creating it now.");
-                }
-                catch
-                {
-                    MessageBox.Show("Couldn't parse file");
-                }
-                finally
-                {
-                    if (fs != null)
-                        fs.Close();
-                }
+                actionClockControl acc = new actionClockControl(m_Container.getTimer(i));
+                uxFlowPanel.Controls.Add(acc);
             }
         }
 
@@ -93,7 +69,7 @@ namespace Anachrophobe
         private void Form1_Load(object sender, EventArgs e)
         {
             DebugCode();
-            EventMessenger.Changed += EventMessenger_Changed;
+            //EventMessenger.Changed += EventMessenger_Changed;
 
             try
             {

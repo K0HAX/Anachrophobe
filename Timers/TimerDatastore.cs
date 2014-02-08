@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
 
-namespace Anachrophobe
+namespace Timers
 {
     // This is serializable for two reasons
     // In the future I want two features, networking, and storage of timers.
@@ -108,6 +108,32 @@ namespace Anachrophobe
             }
         }
 
+        public bool UpdateStart(string startTime)
+        {
+            try
+            {
+                Start = ParseTime.ParseDT(startTime);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateLength(string lengthTime)
+        {
+            try
+            {
+                Length = ParseTime.ParseTS(lengthTime);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         // Start is public get, private set. Don't ever let other classes directly mess with DateTimes
         public DateTime Start
         {
@@ -186,6 +212,11 @@ namespace Anachrophobe
             get
             {
                 return m_Name;
+            }
+
+            set
+            {
+                m_Name = value;
             }
         }
 
