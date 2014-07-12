@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using Timers;
+using System.Threading;
+using Pushover;
 
 namespace Anachrophobe
 {
@@ -30,6 +32,12 @@ namespace Anachrophobe
         private int m_ErrorCount;
         // m_MaxError determines how many errors m_ErrorCount can hit before the control self-destructs
         private static int m_MaxError = 3;
+        private Pushover.Pushover PushoverSender;
+
+        private bool HasStarted = false;
+        private bool HasEnded = false;
+
+        //private Pushover OtherPushover;
 
         public actionClockControl()
         {
@@ -42,6 +50,7 @@ namespace Anachrophobe
             uxNameLabel.Text = m_Action.Name;
             uxTimeOfAction.Text = Convert.ToDateTime(m_Action.Start).ToString("MM/dd/yyyy hh:mm:ss tt");
             uxEndOfAction.Text = m_Action.Length.ToString();
+            PushoverSender = new Pushover.Pushover("TOP SECRET");
         }
 
         // This initialization method tells the control if it is the first one in the container form
@@ -65,6 +74,7 @@ namespace Anachrophobe
             uxTimeOfAction.Text = m_Action.Start.ToString();
             uxEndOfAction.Text = m_Action.Length.ToString();
             uxNameLabel.Text = m_Action.Name;
+            PushoverSender = new Pushover.Pushover("a4P62FFA6nbZTfUW7DZ2LMT2KRsimi");
             if (isFirst == true)
                 m_isFirst = true;
             EventMessenger.SendMessage(this, m_Action, true, false);
@@ -143,6 +153,12 @@ namespace Anachrophobe
                     if (m_Action.StartTime.TotalSeconds >= 0)
                     {
                         m_Action.Background_Start = Color.Red;
+                        if (HasStarted == false)
+                        {
+                            HasStarted = true;
+                            Thread thread = new Thread(() => PushoverSender.SendMessage("'" + m_Action.Name + "' has started"));
+                            thread.Start();
+                        }
                     }
                 }
                 catch
@@ -164,6 +180,8 @@ namespace Anachrophobe
                         {
                             m_BlinkTrack = 0;
                             blinkTimer.Enabled = true;
+                            Thread thread = new Thread(() => PushoverSender.SendMessage("'" + m_Action.Name + "' is starting."));
+                            thread.Start();
                         }
                     }
                 }
@@ -185,6 +203,8 @@ namespace Anachrophobe
                         {
                             m_BlinkTrack = 0;
                             blinkTimer.Enabled = true;
+                            Thread thread = new Thread(() => PushoverSender.SendMessage("'" + m_Action.Name + "' is ending."));
+                            thread.Start();
                         }
                     }
                 }
@@ -204,6 +224,12 @@ namespace Anachrophobe
                     if (m_Action.EndTime.TotalSeconds >= 0)
                     {
                         m_Action.Background_End = Color.Red;
+                        if (HasEnded == false)
+                        {
+                            HasEnded = true;
+                            Thread thread = new Thread(() => PushoverSender.SendMessage("'" + m_Action.Name + "' has ended."));
+                            thread.Start();
+                        }
                     }
                 }
                 catch

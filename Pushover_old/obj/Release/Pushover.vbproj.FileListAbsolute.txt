@@ -1,0 +1,3 @@
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Pushover\obj\Release\Pushover.Resources.resources
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Pushover\obj\Release\Pushover.vbproj.GenerateResource.Cache
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Pushover\obj\Release\Pushover.vbprojResolveAssemblyReference.cache

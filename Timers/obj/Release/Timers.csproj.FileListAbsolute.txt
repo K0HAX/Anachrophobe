@@ -2,3 +2,8 @@ C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\bin\Release\Timers.dll
 C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\bin\Release\Timers.pdb
 C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\obj\Release\Timers.dll
 C:\Users\Michael\Documents\GitHub\Anachrophobe\Timers\obj\Release\Timers.pdb
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Timers\bin\Release\Timers.dll
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Timers\bin\Release\Timers.pdb
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Timers\obj\Release\Timers.csprojResolveAssemblyReference.cache
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Timers\obj\Release\Timers.dll
+C:\Users\Minion\Documents\Visual Studio 2013\Projects\Anachrophobe\Timers\obj\Release\Timers.pdb

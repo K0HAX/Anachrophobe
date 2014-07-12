@@ -199,6 +199,10 @@
     <Content Include="CLOCK icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pushover\Pushover.csproj">
+      <Project>{64b0ee53-9e17-41ed-b381-0e31f4a2278b}</Project>
+      <Name>Pushover</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Timers\Timers.csproj">
       <Project>{9BD5E647-2782-4FB6-97E4-F6BDA88631C5}</Project>
       <Name>Timers</Name>
