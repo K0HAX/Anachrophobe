@@ -17,8 +17,6 @@ namespace Pushover
         public Pushover(string AppToken)
         {
             m_AppToken = AppToken;
-            //m_UserKey = UserKey;
-            //UserKeys = new List<string>() { "u9b6cLVBDTrfkz4EjknDdGumPpRrc1" };
             UserKeys = users.GetUsers();
         }
 

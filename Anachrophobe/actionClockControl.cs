@@ -74,7 +74,7 @@ namespace Anachrophobe
             uxTimeOfAction.Text = m_Action.Start.ToString();
             uxEndOfAction.Text = m_Action.Length.ToString();
             uxNameLabel.Text = m_Action.Name;
-            PushoverSender = new Pushover.Pushover("a4P62FFA6nbZTfUW7DZ2LMT2KRsimi");
+            PushoverSender = new Pushover.Pushover("TOP SECRET");
             if (isFirst == true)
                 m_isFirst = true;
             EventMessenger.SendMessage(this, m_Action, true, false);
